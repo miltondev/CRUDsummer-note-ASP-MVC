@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
-
+<br />
 <div class="panel panel-default">
-    <div class="panel-heading panel-head">Add Notes</div>
+    <div class="panel-heading panel-head">Add New</div>
     <div class="panel-body">
         @using (Html.BeginForm())
             {
@@ -31,12 +31,16 @@
                     <div class="col-lg-9"></div>
                     <div class="col-lg-3">
                         <button class="btn btn-success" id="btnSubmit" type="submit">
-                            Submit
+                            Save
                         </button>
                     </div>
                 </div>
             </div>
         }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
     </div>
 </div>
 @Scripts.Render("~/bundles/jqueryval")

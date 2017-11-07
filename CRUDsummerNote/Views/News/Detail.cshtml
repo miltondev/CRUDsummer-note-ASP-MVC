@@ -4,34 +4,42 @@
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading panel-head">Detail News</div>
+    <div class="panel-body">
+        <div>
+    
+    
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tittle)
+                </dt>
 
-<h2>Detail</h2>
+                <dd>
+                    @Html.DisplayFor(model => model.Tittle)
+                </dd>
 
-<div>
-    <h4>News</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Tittle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Tittle)
-        </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Content)
+                </dt>
 
 
+                <dd>
+                    @Html.Raw(Model.Content)
+                </dd>
 
-    </dl>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Content, new { @class = "col-lg-2 control-label" })
-        <div class="col-lg-9">
-            @Html.Raw(Model.Content)
 
+            </dl>
         </div>
+
     </div>
+    <hr />
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+

@@ -5,103 +5,136 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading panel-head">Edit News</div>
+    <div class="panel-body">
+        <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Content, new { id = "Id" })
 
-<link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
-@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" , novalidate = "novalidate" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Content, new { id = "Id" })
+            <div class="form-horizontal">
    
-    <div class="form-horizontal">
-        <h4>News</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tittle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Tittle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Tittle, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Tittle, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-lg-9">
+                        @Html.EditorFor(model => model.Tittle, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Tittle, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Content, new { @class = "col-lg-2 control-label" })
-            <div class="col-lg-9">
-                <div class="ibox-content col-lg-9">
-                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control note-codable summernote", @row = 5 ,@Id = "summernote" })
-                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Content, new { @class = "col-lg-2 control-label" })
+                        <div class="ibox-content col-lg-9">
+                            @Html.TextAreaFor(model => model.Content, new { @class = "form-control note-codable summernote", @row = 5, @Id = "summernote" })
+                            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                        </div>
+                  
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" id="Save" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" id="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 
-   
-
 @section scripts{
-@Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/summernote/summernote.js"></script>
     <script>
-$(document).ready(function () {
-    $('.summernote').summernote({
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                minHeight: 400,
+                tabsize: 2,
+                disableDragAndDrop: false,
+                dialogsInBody: true,
+                dialogsFade: true,
+                ace: {
+                    aceTheme: 'ace/theme/dawn',
+                    aceMode: 'c_cpp',
+                    aceLineHeight: '32px',
+                    aceFontSize: '16px',
+                    aceModeSelectorLabel: 'select your language',
+                    aceCodeInputAreaLabel: 'input your code',
+                    aceCodeSubmitBtnLabel: 'Insert',
+                    aceModalTitle: 'Insert Code',
+                    aceModes: [
+                        'c/c++', 'java', 'javascript', 'css', 'html', 'perl', 'python', 'php', 'ruby',
+                        'sh', 'golang', 'julia', 'rust', 'scala', 'haskell', 'lisp', 'lua', 'sql',
+                        'coffee', 'typescript'
+                    ],
+                },
+                codemirror: { // codemirror options
+                    lineNumbers: true,
+                    matchBrackets: true,
+                    styleActiveLine: true,
+                    theme: "ambiance"
+                },
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                    ['myplugin', ['aceCodeEditor']]
+                ],
+                callbacks: {
+                    onImageUpload: function (files, editor, welEditable) {
+                        sendFile(files[0], editor, welEditable);
+                    }
+                }
+            });
 
-        minHeight: 400,
-        tabsize: 2,
-        minHeight: null,             // set minimum height of editor
-        maxHeight: null,             // set maximum height of editor
-        focus: true,
-        callbacks: {
-            onImageUpload: function (files, editor, welEditable) {
-                sendFile(files[0], editor, welEditable);
-            }
-        }
-    });
+            //Set Values in Summernote
+            //var info = document.getElementById('Content').value;
+            //  $('#summernote').summernote('code', info);
+            //end set values
 
-    //Set Values in Summernote
-  //var info = document.getElementById('Content').value;
-  //  $('#summernote').summernote('code', info);
+        });
 
+        //solution in asp.net mvc, set value in the model
+        $(document).on('click', '#Save', function () {
+            var markupStr = $('#summernote').summernote('code');
+            $('#summernote').val(markupStr);
+            $("#Id").val(markupStr);
+        });
+        //end solution
 
-});
+        function sendFile(file, editor, welEditable) {
+            var data = new FormData();
 
-
-$(document).on('click', '#Save', function () {
-    var markupStr = $('#summernote').summernote('code');
-    $('#summernote').val(markupStr);
-    $("#Id").val(markupStr);
-});
-
-
-function sendFile(file, editor, welEditable) {
-    var data = new FormData();
-
-    data.append("file", file);
-    $.ajax({
-        data: data,
-        type: "POST",
-        processData: false,
-        contentType: false,
-        cache: false,
-        url: '/News/UploadImages',
-        success: function (url) {
-            $('.summernote').summernote('insertImage', url);
-        }
-    });
-};
+            data.append("file", file);
+            $.ajax({
+                data: data,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                cache: false,
+                url: '/News/UploadImages',
+                success: function (url) {
+                    $('.summernote').summernote('insertImage', url);
+                }
+            });
+        };
 
     </script>
 }
