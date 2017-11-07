@@ -1,0 +1,109 @@
+﻿@model CRUDsummerNote.Models.News
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" , novalidate = "novalidate" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Content, new { id = "Id" })
+   
+    <div class="form-horizontal">
+        <h4>News</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tittle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Tittle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tittle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Content, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-9">
+                <div class="ibox-content col-lg-9">
+                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control note-codable summernote", @row = 5 ,@Id = "summernote" })
+                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" id="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+   
+
+@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/summernote/summernote.js"></script>
+    <script>
+$(document).ready(function () {
+    $('.summernote').summernote({
+
+        minHeight: 400,
+        tabsize: 2,
+        minHeight: null,             // set minimum height of editor
+        maxHeight: null,             // set maximum height of editor
+        focus: true,
+        callbacks: {
+            onImageUpload: function (files, editor, welEditable) {
+                sendFile(files[0], editor, welEditable);
+            }
+        }
+    });
+
+    //Set Values in Summernote
+  //var info = document.getElementById('Content').value;
+  //  $('#summernote').summernote('code', info);
+
+
+});
+
+
+$(document).on('click', '#Save', function () {
+    var markupStr = $('#summernote').summernote('code');
+    $('#summernote').val(markupStr);
+    $("#Id").val(markupStr);
+});
+
+
+function sendFile(file, editor, welEditable) {
+    var data = new FormData();
+
+    data.append("file", file);
+    $.ajax({
+        data: data,
+        type: "POST",
+        processData: false,
+        contentType: false,
+        cache: false,
+        url: '/News/UploadImages',
+        success: function (url) {
+            $('.summernote').summernote('insertImage', url);
+        }
+    });
+};
+
+    </script>
+}
+
+

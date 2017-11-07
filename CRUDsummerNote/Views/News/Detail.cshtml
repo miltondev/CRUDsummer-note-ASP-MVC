@@ -1,0 +1,37 @@
+﻿@model CRUDsummerNote.Models.News
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>News</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tittle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tittle)
+        </dd>
+
+
+
+    </dl>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Content, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-9">
+            @Html.Raw(Model.Content)
+
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
